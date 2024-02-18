@@ -1,4 +1,4 @@
-package App
+package Application
 
 import (
 	"database/sql"
@@ -23,4 +23,12 @@ func App() func() Application {
 		connectToDatabase(&application)
 		return application
 	}
+}
+
+// init new request closure
+func NewApp() Application {
+	app := App()
+	application := app()
+
+	return application
 }

@@ -1,4 +1,4 @@
-package App
+package Application
 
 import (
 	"database/sql"
@@ -42,7 +42,7 @@ func connectToDatabase(share ShareResources) {
 }
 
 // close database connection
-func closeConnection(share ShareResources) {
+func CloseConnection(share ShareResources) {
 	switch share.(type) {
 	case *Application:
 		app := share.(*Application)

@@ -1,30 +1,25 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
+	"starter-golang/Application"
+	"starter-golang/Models"
+	"starter-golang/Routes"
 )
 
 func main() {
 
-	app := app()
-	application := app()
-	application.Gin.GET("/ping", func(c *gin.Context) {
+	app := Application.NewApp()
 
-		r := newRequest(c)
-		r.Connection.Close()
+	// migrate project
+	app.DB.AutoMigrate(&Models.User{})
 
-		//r.Response(200, gin.H{
-		//	"message": "Hello Every One",
-		//})
-		r.Ok(gin.H{
-			"message": "Hello Every One",
-		})
+	// close app connection
+	Application.CloseConnection(&app)
 
-		//request.Context.JSON(http.StatusOK, gin.H{
-		//	"message": "pong",
-		//})
-	})
+	// start routing
+	routeApp := Routes.RouterApp{&app}
+	routeApp.Routing()
 
-	application.Gin.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+	app.Gin.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 
 }

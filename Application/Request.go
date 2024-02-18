@@ -1,4 +1,4 @@
-package App
+package Application
 
 import (
 	"database/sql"
@@ -32,7 +32,7 @@ func req() func(c *gin.Context) Request {
 
 // Response response
 func (req Request) Response(code int, body interface{}) {
-	closeConnection(&req)
+	CloseConnection(&req)
 	req.Context.JSON(code, body)
 }
 
