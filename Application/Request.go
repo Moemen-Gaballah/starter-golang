@@ -2,6 +2,7 @@ package Application
 
 import (
 	"database/sql"
+	"github.com/bykovme/gotrans"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"starter-golang/Models"
@@ -14,6 +15,7 @@ type Request struct {
 	User       *Models.User
 	IsAuth     bool
 	IsAdmin    bool
+	Lang       string
 }
 
 type ShareResources interface {
@@ -25,13 +27,20 @@ func (req *Request) Share() {
 }
 
 // handel request closure data
-func req() func(c *gin.Context) Request {
-	return func(c *gin.Context) Request {
+func req() func(c *gin.Context) *Request {
+	return func(c *gin.Context) *Request {
 		var request Request
 		request.Context = c
 		connectToDatabase(&request)
-		return request
+		setLang(&request)
+		return &request
 	}
+}
+
+func setLang(req *Request) {
+	lang := gotrans.DetectLanguage(req.Context.GetHeader("Accept-Language"))
+	gotrans.SetDefaultLocale(lang) // Setting default locale
+	req.Lang = lang
 }
 
 // Response response
@@ -43,8 +52,20 @@ func (req Request) Response(code int, body interface{}) {
 // init new request closure
 func NewRequest(c *gin.Context) *Request {
 	request := req()
-	req := request(c)
-	return &req
+	return request(c)
+}
+
+func NewRequestWithAuth(c *gin.Context) *Request {
+	return NewRequest(c).Auth()
+}
+
+func AuthRequest(c *gin.Context) (*Request, bool) {
+	r := NewRequestWithAuth(c)
+	if !r.IsAuth {
+		r.NotAuth()
+		return r, false
+	}
+	return r, true
 }
 
 func (req *Request) Auth() *Request {
