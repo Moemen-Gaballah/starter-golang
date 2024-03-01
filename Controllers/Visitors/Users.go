@@ -19,7 +19,7 @@ func Register(c *gin.Context) {
 	user.Token = user.Email
 	user.Group = "user"
 	r.DB.Create(&user)
-	r.Created(user)
+	r.Created(user.Transform())
 }
 
 func Login(c *gin.Context) {
@@ -38,5 +38,5 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	r.Ok(user)
+	r.Ok(user.Transform())
 }
