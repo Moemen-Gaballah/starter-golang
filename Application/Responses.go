@@ -20,3 +20,7 @@ func (req Request) NotAuth() {
 		"message": "You are not auth",
 	})
 }
+
+func (req Request) BadRequest(err interface{}) {
+	req.Response(422, err)
+}
