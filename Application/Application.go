@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"starter-golang/Database"
+	"starter-golang/Database/Seeders"
 )
 
 type Application struct {
@@ -41,4 +42,8 @@ func NewApp() *Application {
 
 func (app *Application) Migrate() {
 	Database.Migrate(app.DB)
+}
+
+func (app *Application) Seed() {
+	Seeders.Seeds(app.DB)
 }

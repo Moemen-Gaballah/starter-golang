@@ -9,9 +9,11 @@ func main() {
 	app := Application.NewApp()
 
 	// migrate project
-	//app.DB.AutoMigrate(&Models.User{})
 	app.Migrate()
-	
+
+	// seed data
+	app.Seed()
+
 	// close app connection
 	Application.CloseConnection(app)
 
