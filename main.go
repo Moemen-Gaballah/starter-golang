@@ -2,7 +2,6 @@ package main
 
 import (
 	"starter-golang/Application"
-	"starter-golang/Models"
 	"starter-golang/Routes"
 )
 
@@ -10,8 +9,9 @@ func main() {
 	app := Application.NewApp()
 
 	// migrate project
-	app.DB.AutoMigrate(&Models.User{})
-
+	//app.DB.AutoMigrate(&Models.User{})
+	app.Migrate()
+	
 	// close app connection
 	Application.CloseConnection(app)
 

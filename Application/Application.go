@@ -6,6 +6,7 @@ import (
 	"github.com/bykovme/gotrans"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+	"starter-golang/Database"
 )
 
 type Application struct {
@@ -36,4 +37,8 @@ func App() func() *Application {
 func NewApp() *Application {
 	app := App()
 	return app()
+}
+
+func (app *Application) Migrate() {
+	Database.Migrate(app.DB)
 }
