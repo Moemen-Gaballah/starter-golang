@@ -14,3 +14,10 @@ func RegisterValidation(user Models.User) validation.Errors {
 		"password": validation.Validate(user.Password, Validations.RequiredRule(), Validations.MinMaxRule()),
 	}
 }
+
+func LoginValidation(user Models.User) validation.Errors {
+	return validation.Errors{
+		"email":    validation.Validate(user.Email, Validations.RequiredRule(), Validations.IsEmailRule(), Validations.MinMaxRule()),
+		"password": validation.Validate(user.Password, Validations.RequiredRule(), Validations.MinMaxRule()),
+	}
+}
